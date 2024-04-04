@@ -21,6 +21,7 @@ class _DashScreenState extends State<DashScreen> {
           backgroundColor: Colors.lightBlue,
           title: Text("Media Player"),
           bottom: TabBar(
+            unselectedLabelColor: Colors.black54,
             tabs: [
               Tab(icon: Icon(Icons.music_note),text: "Music",),
               Tab(icon: Icon(Icons.video_file),text: "video",)

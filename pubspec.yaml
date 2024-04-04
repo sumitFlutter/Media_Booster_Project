@@ -37,6 +37,9 @@ dependencies:
   cupertino_icons: ^1.0.6
   provider: ^6.1.2
   assets_audio_player: ^3.1.1
+  carousel_slider: ^4.2.1
+  video_player: ^2.8.4
+  chewie: ^1.8.1
 
 dev_dependencies:
   flutter_test:
@@ -68,6 +71,7 @@ flutter:
     - assets/music/controller/
     - assets/music/mp3/
     - assets/music/thumbnail/
+    - assets/video/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

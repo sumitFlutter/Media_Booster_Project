@@ -1,3 +1,4 @@
+import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -22,7 +23,7 @@ class _MusicPlayerState extends State<MusicPlayer> {
     return SafeArea(
         child: Scaffold(
       appBar: AppBar(
-        title: Text(musicRead!.musicList[musicRead!.titleI].name),
+        title: Text(musicWatch!.musicList[musicWatch!.titleI].name),
       ),
       body: Padding(
         padding: const EdgeInsets.all(15),
@@ -30,50 +31,83 @@ class _MusicPlayerState extends State<MusicPlayer> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Expanded(
-                child: Container(child: Center(child: Image.asset(musicRead!.musicList[musicWatch!.titleI].thumbnail,height: 216, width: 384, fit: BoxFit.cover,)))),
-            SizedBox(
+                child: Container(child: Center(child: Image.asset(musicWatch!.musicList[musicWatch!.titleI].thumbnail,height: 216, width: 384, fit: BoxFit.cover,)))),
+            const SizedBox(
               height: 20,
             ),
-            Theme(
-              data: ThemeData(useMaterial3: false),
-              child: Slider(
-                value: 1,
-                onChanged: (value) {},
+            PlayerBuilder.currentPosition(
+              player: musicWatch!.audioPlayer,
+              builder: (context, position) =>
+              Column(
+                children: [
+                  Theme(
+                    data: ThemeData(useMaterial3: false),
+                    child: Slider(
+                      value: position.inSeconds.toDouble(),
+                      onChanged: (value) {
+                        musicRead!.audioPlayer
+                            .seek(Duration(seconds: value.toInt()));
+                      },
+                      max: musicWatch!.totalDuration.inSeconds.toDouble(),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text("$position",
+                            style:
+                            const TextStyle(color: Colors.white, fontSize: 18)),
+                        Text("${musicWatch!.totalDuration}",
+                            style:
+                            const TextStyle(color: Colors.white, fontSize: 18))
+                      ],
+                    ),
+                  ),
+                ],
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                musicWatch!.titleI==0?Image.asset("assets/music/controller/back_disabled.png",height: 80,fit: BoxFit.cover,):
                 InkWell(
-                  onTap: () {
-                    musicRead!.audioPlayer.previous();
-                    musicRead!.musicPlayOrPause(true);
-                    musicRead!.backOrForward(musicWatch!.titleI--);
+                  onTap: () async {
+                    musicRead!.audioPlayer.pause();
+                    musicRead!.setPlay(false);
+                   await musicRead!.audioPlayer.previous();
+                    musicRead!.getDuration();
+                    musicRead!.setPlay(true);
+                    musicRead!.backOrForward(musicWatch!.titleI-1);
                   },
                     child: Image.asset("assets/music/controller/back.png")),
-                SizedBox(width: 3,),
+                const SizedBox(width: 15,),
                 InkWell(
                     onTap: () {
                       if(musicWatch!.isPlay)
                         {
                           musicRead!.audioPlayer.pause();
+                          musicRead!.setPlay(false);
                         }
                       else{
-                        musicWatch!.audioPlayer.play();
+                        musicRead!.audioPlayer.play();
+                        musicRead!.setPlay(true);
                       }
-                      musicRead!.musicPlayOrPause(
-                          musicWatch!.audioPlayer.isPlaying.value);
                     },
                     child: musicWatch!.isPlay?Image.asset("assets/music/controller/pause.png"):Image.asset("assets/music/controller/play.png")),
-                SizedBox(width: 3,),
+                const SizedBox(width: 15,),
                 InkWell(
-                    onTap: () {
-                      musicRead!.audioPlayer.next();
-                      musicRead!.musicPlayOrPause(true);
-                      musicRead!.backOrForward(musicWatch!.titleI++);
+                    onTap: () async {
+                      musicRead!.audioPlayer.pause();
+                      musicRead!.setPlay(false);
+                    await musicRead!.audioPlayer.next();
+                      musicRead!.getDuration();
+                     musicRead!.setPlay(true);
+                      musicRead!.backOrForward(musicWatch!.titleI+1);
                     },
                     child: Image.asset("assets/music/controller/forward.png")),
 
