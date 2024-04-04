@@ -76,10 +76,10 @@ class _MusicPlayerState extends State<MusicPlayer> {
               children: [
                 musicWatch!.titleI==0?Image.asset("assets/music/controller/back_disabled.png",height: 80,fit: BoxFit.cover,):
                 InkWell(
-                  onTap: () async {
+                  onTap: () {
                     musicRead!.audioPlayer.pause();
                     musicRead!.setPlay(false);
-                   await musicRead!.audioPlayer.previous();
+                    musicRead!.audioPlayer.previous();
                     musicRead!.getDuration();
                     musicRead!.setPlay(true);
                     musicRead!.backOrForward(musicWatch!.titleI-1);
@@ -101,10 +101,10 @@ class _MusicPlayerState extends State<MusicPlayer> {
                     child: musicWatch!.isPlay?Image.asset("assets/music/controller/pause.png"):Image.asset("assets/music/controller/play.png")),
                 const SizedBox(width: 15,),
                 InkWell(
-                    onTap: () async {
+                    onTap: ()  {
                       musicRead!.audioPlayer.pause();
                       musicRead!.setPlay(false);
-                    await musicRead!.audioPlayer.next();
+                     musicRead!.audioPlayer.next();
                       musicRead!.getDuration();
                      musicRead!.setPlay(true);
                       musicRead!.backOrForward(musicWatch!.titleI+1);
